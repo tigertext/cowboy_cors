@@ -47,7 +47,7 @@ policy_init(Req, State = #state{policy = Policy}) ->
                   "   for the reason ~p:~p~n"
                   "** Request was ~p~n** Stacktrace: ~p~n~n",
                   [Policy, policy_init, 1, Class, Reason,
-                   cowboy_req:to_list(Req), erlang:get_stacktrace()]),
+                   cowboy_req:to_list(Req), []]),
             error_terminate(Req, State)
     end.
 
@@ -200,7 +200,7 @@ call(Req, State = #state{policy = Policy, policy_state = PolicyState}, Callback,
                       "   for the reason ~p:~p~n"
                       "** Request was ~p~n** Stacktrace: ~p~n~n",
                       [Policy, Callback, 2, Class, Reason,
-                       cowboy_req:to_list(Req), erlang:get_stacktrace()]),
+                       cowboy_req:to_list(Req), []]),
                     error_terminate(Req, State)
             end;
         false ->
