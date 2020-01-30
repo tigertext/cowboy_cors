@@ -1,11 +1,3 @@
-PROJECT = cowboy_cors
+all:
+	rebar3 compile 
 
-DEPS = cowboy
-dep_cowboy = https://github.com/extend/cowboy.git 0.8.6
-
-include erlang.mk
-
-.PHONY: test
-
-test:
-	CT_SUITES=cors make tests
