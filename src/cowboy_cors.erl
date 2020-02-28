@@ -210,6 +210,7 @@ call(Req, State = #state{policy = Policy, policy_state = PolicyState}, Callback,
         false ->
             {Default, Req, PolicyState}
     end,
+    ct:pal("call ~p result ~p ", [Callback, V]),
     V.
 
 terminate(Req, #state{preflight = true, env = Env}) ->

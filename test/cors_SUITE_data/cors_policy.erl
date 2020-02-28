@@ -41,7 +41,7 @@ max_age(Req, State) ->
     {MaxAge, Req1, State}.
 
 parse_list(Name, Req) ->
-    case cowboy_req:qs_val(Name, Req) of
+    case qs_val(Name, Req) of
         {undefined, Req1} ->
             {[], Req1};
         {Bin, Req1} ->
@@ -50,7 +50,7 @@ parse_list(Name, Req) ->
     end.
 
 parse_boolean(Name, Req, Default) ->
-    case cowboy_req:qs_val(Name, Req) of
+    case qs_val(Name, Req) of
         {undefined, Req1} ->
             {Default, Req1};
         {<<"true">>, Req1} ->
@@ -60,11 +60,21 @@ parse_boolean(Name, Req, Default) ->
     end.
 
 parse_integer(Name, Req) ->
-    case cowboy_req:qs_val(Name, Req) of
+    case qs_val(Name, Req) of
         {undefined, Req1} ->
             {undefined, Req1};
         {Bin, Req1} ->
             String = binary_to_list(Bin),
             {MaxAge, []} = string:to_integer(String),
             {MaxAge, Req1}
+    end.
+qs_val(KeyBin, Req) ->
+    ct:pal("get key ~p ", [KeyBin]),
+    
+    Key = binary_to_existing_atom(KeyBin, utf8),
+    try
+        Map = cowboy_req:match_qs([Key], Req),
+        {maps:get(Key, Map, undefined), Req}
+    catch _:_ ->
+        {undefined, Req}
     end.
