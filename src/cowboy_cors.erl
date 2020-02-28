@@ -210,9 +210,8 @@ call(Req, State = #state{policy = Policy, policy_state = PolicyState}, Callback,
     end,
     V.
 
-terminate(Req, #state{preflight = true, env = Env}) ->
-    Req1 = maps:put(cowboy_cors, {stop, 200}, Req),
-    {ok, Req1, Env};
+terminate(Req, #state{preflight = true}) ->
+    {stop, 200, Req};
 terminate(Req, #state{env = Env}) ->
     {ok, Req, Env}.
 
