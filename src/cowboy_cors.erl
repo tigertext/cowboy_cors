@@ -171,7 +171,6 @@ if_allow_credentials(Req, State = #state{origin = Origin}) ->
     Req2 = cowboy_req:set_resp_header(<<"access-control-allow-credentials">>, <<"true">>, Req1),
     Req3 = cowboy_req:set_resp_header(<<"vary">>, <<"origin">>, Req2),
     Req4 = cowboy_req:set_resp_header(<<"x-hello">>, <<"world">>, Req3),
-    ct:pal("if_not_allow_credentials ~p", [Req4]),
     terminate(Req4, State).
 
 if_not_allow_credentials(Req, State = #state{origin = Origin}) ->
@@ -181,7 +180,6 @@ if_not_allow_credentials(Req, State = #state{origin = Origin}) ->
     Req1 = cowboy_req:set_resp_header(<<"access-control-allow-origin">>, Origin, Req),
     Req2 = cowboy_req:set_resp_header(<<"vary">>, <<"origin">>, Req1),
     Req3 = cowboy_req:set_resp_header(<<"x-hello">>, <<"world">>, Req2),
-    ct:pal("if_not_allow_credentials ~p", [Req3]),
     terminate(Req3, State).
 
 expect(Req, State, Callback, Expected, OnTrue, OnFalse) ->
@@ -210,15 +208,12 @@ call(Req, State = #state{policy = Policy, policy_state = PolicyState}, Callback,
         false ->
             {Default, Req, PolicyState}
     end,
-    ct:pal("call ~p result ~p ", [Callback, V]),
     V.
 
 terminate(Req, #state{preflight = true, env = Env}) ->
     Req1 = maps:put(cowboy_cors, {stop, 200}, Req),
-    ct:pal("req with md: ~p ", [Req1]),
     {ok, Req1, Env};
 terminate(Req, #state{env = Env}) ->
-    ct:pal("req with md in terminate: ~p ", [Req]),
     {ok, Req, Env}.
 
 -spec error_terminate(cowboy_req:req(), #state{}) -> no_return().

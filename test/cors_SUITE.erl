@@ -171,11 +171,11 @@ format_option(List) when is_list(List) ->
 
 request(Method, Headers, Options, Config) ->
     Url = build_url(<<"/">>, Options, Config),
-    ct:pal("Sending request to ~p", [Url]),
+    ct:comment("Sending request to ~p", [Url]),
     Header1 = [{str(Key), str(V)} || {Key, V} <- Headers],
     {ok, {{_, Code, _}, ResponseHeaders, Body}} = httpc:request(Method, {str(Url), Header1}, [], []),
     
-    ct:pal("Receiving response: ~p", [{Code, ResponseHeaders, Body}]),
+    ct:comment("Receiving response: ~p", [{Code, ResponseHeaders, Body}]),
     ResponseHeaders1 = [{bin(K), bin(V)} || {K, V} <- ResponseHeaders],
     {ok, Code, ResponseHeaders1, Body}.
 

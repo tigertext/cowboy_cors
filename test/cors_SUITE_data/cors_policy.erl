@@ -69,8 +69,6 @@ parse_integer(Name, Req) ->
             {MaxAge, Req1}
     end.
 qs_val(KeyBin, Req) ->
-    ct:pal("get key ~p ", [KeyBin]),
-    
     Key = binary_to_existing_atom(KeyBin, utf8),
     try
         Map = cowboy_req:match_qs([Key], Req),
