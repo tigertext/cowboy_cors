@@ -170,8 +170,7 @@ if_allow_credentials(Req, State = #state{origin = Origin}) ->
     Req1 = cowboy_req:set_resp_header(<<"access-control-allow-origin">>, Origin, Req),
     Req2 = cowboy_req:set_resp_header(<<"access-control-allow-credentials">>, <<"true">>, Req1),
     Req3 = cowboy_req:set_resp_header(<<"vary">>, <<"origin">>, Req2),
-    Req4 = cowboy_req:set_resp_header(<<"x-hello">>, <<"world">>, Req3),
-    terminate(Req4, State).
+    terminate(Req3, State).
 
 if_not_allow_credentials(Req, State = #state{origin = Origin}) ->
     %% To simplify conformance with the requirement that "*" is only
